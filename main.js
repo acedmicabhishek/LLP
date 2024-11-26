@@ -134,3 +134,48 @@ fs.readFile("example.txt", 'utf8', (err, data) => {
         console.log("File Content:\n", data);
     }
 });
+
+// Wait for the DOM to be fully loaded before running the script
+document.addEventListener("DOMContentLoaded", function() {
+    // 1. Handle Button Click
+    const clickButton = document.getElementById("clickButton");
+    const output = document.getElementById("output");
+
+    // Adding an event listener for 'click' event on the button
+    clickButton.addEventListener("click", function() {
+        output.textContent = "Button was clicked!";
+    });
+
+    // 2. Handle Touch Events
+    const touchButton = document.getElementById("touchButton");
+
+    // Adding touch event listeners
+    touchButton.addEventListener("touchstart", function(event) {
+        event.preventDefault();  // Prevent default action (e.g., scrolling)
+        output.textContent = "Button was touched!";
+    });
+
+    touchButton.addEventListener("touchend", function(event) {
+        event.preventDefault();
+        output.textContent = "Touch ended!";
+    });
+
+    touchButton.addEventListener("touchmove", function(event) {
+        event.preventDefault();  // Prevent default action
+        output.textContent = "Touch is moving...";
+    });
+
+    // 3. Handle both click and touch events using the same handler
+    function handleInteraction(event) {
+        if (event.type === "click") {
+            output.textContent = "Button was clicked!";
+        } else if (event.type === "touchstart") {
+            event.preventDefault();  // Prevent scrolling on touch
+            output.textContent = "Button was touched!";
+        }
+    }
+
+    // Bind the same function to both click and touchstart events
+    clickButton.addEventListener("click", handleInteraction);
+    touchButton.addEventListener("touchstart", handleInteraction);
+});
